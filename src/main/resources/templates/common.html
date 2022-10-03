@@ -1,0 +1,173 @@
+
+<!--  js  -->
+<script th:fragment="scripting">
+	function add_to_cart(pid,pname,price){
+		let cart = localStorage.getItem('tan2xcart');
+		if(cart == null){
+			//no cart yet
+			console.log("cart is empty");
+			let products = [];
+			let product = {productId: pid, productName: pname, productQuantity: 1, productPrice: price};
+			products.push(product);
+			localStorage.setItem("tan2xcart", JSON.stringify(products));
+		}
+		else{
+			//cart is already present
+			console.log("some item is present in cart");
+			let products = JSON.parse(cart);
+			let oldProduct = products.find((item) => item.productId == pid);
+			if(oldProduct){
+				console.log("already product is present");
+				oldProduct.productQuantity= oldProduct.productQuantity+1;
+				products.map((item)=> {
+					if(item.productId == oldProduct.productId){
+						item.productQuantity = oldProduct.productQuantity;
+					}
+				})
+				localStorage.setItem("tan2xcart", JSON.stringify(products));
+			}
+			else{
+				console.log("this product not availabe");
+				let product = {productId: pid, productName: pname, productQuantity: 1, productPrice: price};
+				products.push(product);
+				localStorage.setItem("tan2xcart", JSON.stringify(products));
+			}
+		}
+		updateCart();
+	}
+	
+	function updateCart(){
+		let cartString = localStorage.getItem("tan2xcart");
+		let cart = JSON.parse(cartString);
+		if(cart == null || cart.length == 0){
+			console.log("cart is empty !!");
+			$(".cart-body").html("<h3>Cart does not have any items</h3>");
+		}
+		else{
+			console.log("cart in not empty something is there");
+			let table = `
+				<table class="table">
+					<thead class='thead-light'>
+						<tr>
+							<th>Item Name</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					
+					`;
+					
+					let totalPrice = 0;
+					cart.map((item)=> {
+						table+=`
+							<tr>
+								<td> ${item.productName}</td>
+								<td> ${item.productPrice}</td>
+								<td> ${item.productQuantity}</td>
+								<td> ${item.productQuantity * item.productPrice} </td>
+							</tr>
+							`;
+							totalPrice += item.productQuantity * item.productPrice;
+					})
+				
+				if(totalPrice<200){
+					$(".delivery_charge").html(20);
+					totalPrice +=20;
+				}
+				else{
+					$(".delivery_charge").html(0);
+				}
+				$(".get_total").html(totalPrice);
+				table = table + `</table>`
+				$(".cart-body").html(table);
+		}
+	}
+	
+	$(document).ready(function () {
+		updateCart()
+	})
+</script>
+
+<!-- navigation bar -->
+<div th:fragment="navigation">
+
+	<div id="mySidenav" class="sidenavbar">
+	    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	    <a th:href="@{/index}">Home</a>
+	    <!--  
+	    <a href="{% url 'core:order-tracking' %}">Orders</a>
+	    <a href="{% url 'core:order-summary' %}">Carts</a>
+	    <a href="{% url 'core:order-history' %}">Orders history</a>
+	    {% if not request.user.is_authenticated %}
+	    <a href="{% url 'core:register' %}">Sign In </a>
+	    {% endif %}
+	    <a href="">Investor</a>
+	    <a href="{% url 'core:about-tan2x' %}">About</a>
+	    <a href="{% url 'core:privacypolicy' %}">policy</a>  -->
+	</div>
+
+	<div class="nav1" style="background-color:#19e6b3; height:45px;">
+	  <div class="container-fluid" style="padding-top:10px;">
+	    <div class="row">
+	        <div class="col-1" style="padding-top:5px">
+	            <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776;</span>
+	        </div>
+	        <div class="col-5" style="padding-left:10px; padding-top:5px;">
+	            <a href="https://anilkumar.pythonanywhere.com/" style="color:black; font-size:20px"><b>Tan2x</b></a>
+	        </div>
+	        <div class="col-5" style="height:100%; padding-right:0px; padding-top:5px;">
+	          <a th:href="@{/cart}">
+	            <!-- <span class="badge red z-depth-1 mr-1" style="float:right;"> {{ request.user|cart_item_count }} </span>  -->
+	            <i class="fa fa-shopping-cart" style=" color:black; float:right; font-size:26px"></i></a>
+	        </div>
+	    </div>
+	
+	  </div>
+	</div>
+	
+	<div class="nav1" style="background-color:#19e6b3; height:50px;">
+	  <div class="container-fluid" style="padding-top:10px;padding-right:0px; padding-left:0px;">
+	    <div class="row" style="padding-top:5px; margin-left:0px; margin-right:0px;">
+	      <div class="col-12" style="text-align:center;padding-left:0px; padding-bottom:10px;padding-left:10px;">
+	          <form method="get" action="/search">
+	              <input type="text" placeholder="Search.." name="query" id="query" style="width:85%">
+	              <button type="submit"><i class="fa fa-search"></i></button>
+	          </form>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
+	
+</div>
+
+<!-- footer -->
+<div th:fragment="footer" class="footer" >
+    <div class="container-fluid" style="padding-left:0px; padding-top:0px; padding-right:0px; ">
+        <div class="navbar-bottom" id="footid" style="padding-top:0px; padding-bottom:0px;">
+            <div class="row" style="margin-left:0px; margin-right:0px; border-top:1px solid #d0d6d6; border-bottom:1px solid #d0d6d6;">
+                <div class="col-4">
+                    <a th:href="@{/}" class="bta active"><i class="fa fa-home"></i></a>
+                </div>
+                <div class="col-4">
+                    <a th:href="@{/profile}" class="bta"><i class="fa fa-user"></i></a>
+                </div>
+                <div class="col-4">
+                    <a th:href="@{/whatsapp}" class="bta" style="font-size:23px; color:black;">
+                        <i class="fa fa-whatsapp" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:fragment="navbarScript">
+function openNav() {
+  document.getElementById("mySidenav").style.display = "block";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.display = "none";
+}
+</script>

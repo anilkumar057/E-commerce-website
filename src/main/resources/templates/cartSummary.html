@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>This of product view page</title>
+		
+		<!-- style sheet -->
+		<link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+		<link type="text/css" rel="stylesheet" th:href="@{/css/mdb.min.css}">
+		<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+		<!-- font awesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<!-- bootstrap css and js -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- slick carousel slider css and js -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <!-- jQuery first, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+        <!-- Slick Slider JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+		
+	</head>
+	
+	<body>
+		
+		<!-- navigation bar -->
+		<div th:include="common::navigation"></div>
+		
+		<!-- main content of the page -->
+		  <main>
+		    <div class="container" style="padding-bottom:70px; padding-left:0px; padding-right:0px;">
+		    
+		      <div class="row wow fadeIn cartClass" th:each="product : ${cartItem}">
+		      
+		        <div class="col-5">
+		          <img th:src="@{${'productImages/' + product.image}}">
+		        </div>  
+		        
+		        <div class="col-7 p-0">
+		   
+		          <p style="margin-bottom:0px;"><span>&#8377;</span><b th:text="${product.price}"></b></p>
+		          <p style="margin-bottom:0px;">Quantity:
+		            <a th:href="@{/cart/single/remove/{id} (id=${product.productId})}" style="padding-left:5px;"><i class="fa fa-minus mr-2" style="font-size:19px;"></i></a>
+		              <i th:text="${product.quantity}"></i>
+		            <a th:href="@{/addToCart/{id} (id=${product.productId})}"><i class="fa fa-plus ml-2" style="font-size:19px;"></i></a> </p>
+		          <p style="margin-bottom:0px;">Amount:
+		               <span>&#8377;</span><b th:text="${totalCost}"></b>
+		          </p>
+		          <p style="margin-bottom:0px;"> delete <a style="color:red" th:href="@{/cart/delete/{id} (id=${product.id})}">
+		            <i class="fa fa-trash" style="font-size:19px;"></i>
+		            </a> </p>
+		        </div>
+		      </div>
+		
+		      <div class="row center" style="margin:5px;margin-top:20px;padding-top:5px;border:2px solid #919c91;border-radius:20px;">
+		        <div class="col-7">
+		          <h5>Delivery Charge:</h5>
+		        </div>
+		        <div class="col-5">
+		          <b><span>&#8377;</span><i th:text="${deliveryCharge}"></i></b>
+		        </div>
+		      </div>
+		      
+		      <div class="row center" style="margin:5px;margin-top:20px;padding-top:5px;border:2px solid #919c91;border-radius:20px;">
+		        <div class="col-7">
+		          <h5>Total Amount:</h5>
+		        </div>
+		        <div class="col-5">
+		          <b><span>&#8377;</span><h5 th:text="${totalCost}"></h5></b>
+		        </div>
+		      </div>
+		      
+		      <div class="row center" style="margin:0px;margin-top:10px;">
+		        <div class="col-7">
+		          <a class="btn btn-warning  ml-2 p-2" th:href="@{/checkout}" style="border-radius: 8px;">Proceed to Buy</a>
+		        </div>
+		        <div class="col-5">
+		          <a class="btn btn-primary  p-2" th:href="@{/}" style="border-radius: 8px;">Shoping</a>
+		        </div>
+		      </div>
+		      
+		      <hr>
+		      <div style="margin: 10px;">
+		        <h6>1.First Order - Free Delivery</h6>
+		        <h6>2.On more Then <span>&#8377;</span>200 - Free Delivery</h6>
+		        <h6>2.If your product is ruined, you can Instant Returned</h6>
+		        <h6>3.Tan2x uses destinies luggage weighting scale</h6>
+		        <h6>4.Any Help Contact us 8808829080</h6>
+		      </div>
+		    </div>
+		  </main>
+		  <!--Main layout-->
+		
+	</body>
+	<script type="text/javascript" th:replace="common::scripting"></script>
+</html>

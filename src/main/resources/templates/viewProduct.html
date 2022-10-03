@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>This of product view page</title>
+		
+		<!-- style sheet -->
+		<link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+		<link type="text/css" rel="stylesheet" th:href="@{/css/mdb.min.css}">
+		<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+		<!-- font awesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<!-- bootstrap css and js -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- slick carousel slider css and js -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <!-- jQuery first, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+        <!-- Slick Slider JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+		
+	</head>
+	
+	<body>
+		
+		<!-- navigation bar -->
+		<div th:include="common::navigation"></div>
+		
+		<!-- main content of the page -->
+		<main class="pt-3">
+			<div class="container dark-grey-text pb-3">
+			
+				<!-- grid row -->
+				<div class="row wow fadeIn">
+				
+					<!-- grid column -->
+					<div class="col-md-6">
+						<img th:src="@{${'/productImages/' + product.image1 }}" class="img-fluid" style="border-radius: 20px;">
+					</div>
+					
+					<!-- grid column -->
+					<div class="col-md-6">
+						<div class="pt-3">
+							<h5 th:text="${product.title}"></h5>
+							<h6 th:text="${product.price}"><span>&#8377;</span></h6>
+							<a th:href="@{/addToCart/{id} (id=${product.id})}" class="btn btn-success btn-md my-0 pl-4 pr-4 p-2" style="border-radius: 10px">Buy Now</a>
+							<a th:href="@{/cart/viewProduct/{id} (id=${product.id})}" class="btn btn-primary btn-md my-0 pl-4 pr-4 p-2" style="border-radius: 10px">Add to Cart</a>
+							
+							<p class="lead font-weight-bold pt-3"> Description</p>
+							<pre th:text="${product.description}">${product.description}</pre>
+							
+						</div>
+					</div>
+					
+				</div>
+				
+				<!-- bottom images -->
+				<div class="row wow fadeIn">
+				
+					<!-- image1 -->
+					<div class="col-md-6">
+						<img th:src="@{${'/productImages/' + product.image1}}" class="img-fluid" style="border-radius:10px;">
+					</div>
+					
+					<!-- image2 -->
+					<div class="col-md-6">
+						<img th:src="@{${'/productImages/' + product.image2}}" class="img-fluid" style="border-radius:10px;">
+					</div>
+					
+				</div>
+				
+			</div>
+		</main>
+		
+	</body>
+	<script type="text/javascript" th:replace="common::scripting"></script>
+</html>
